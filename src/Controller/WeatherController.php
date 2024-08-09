@@ -10,12 +10,16 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class WeatherController extends AbstractController
 {
-    #[Route('/weather', name: 'app_weather')]
-    public function index(): Response
+    #[Route('/weather/{country_code}/{city}', name: 'app_weather')]
+    public function index(string $country_code, string $city): Response
     {
-        $draw = random_int(1, 100);
+        $temprature = random_int(-20, 100);
 
-        $weather = $draw <= 50 ? "Its sunny!" : "Its rainy!";
+        $weather = [
+            'country_code' => $country_code,
+            'city' => $city,
+            'temperature' => $temprature,
+        ];
 
         return $this->render('weather/index.html.twig', [
             'controller_name' => 'WeatherController',
