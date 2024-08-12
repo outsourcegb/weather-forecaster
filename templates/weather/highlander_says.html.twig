@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Highlander says...
+{% endblock %}
+
+{% block body %}
+	<h1>Highlander says...</h1>
+
+	{% for message in app.flashes('info') %}
+		<div class="flash-info">
+			Info:
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	{% for forcast in forcasts %}
+		<div class="forcast">
+			<p>{{forcast}}</p>
+		</div>
+	{% endfor %}
+
+	{% if(threshold) %}
+		<div class="threshold">
+			<p>Threshold:
+				{{threshold}}</p>
+		</div>
+	{% endif %}
+
+	<nav>
+		<p>
+
+			<a href="{{ path('app_weather_highlander', { threshold: 11 }) }}">Try Again</a>
+		</p>
+	</nav>
+{% endblock %}

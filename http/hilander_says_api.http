@@ -1,0 +1,27 @@
+### GET request from highlander
+GET http://localhost:8000/weather/highlander_says
+Accept: text/html
+
+### POST request from highlander
+POST http://localhost:8000/weather/highlander_says
+Accept: text/html
+
+
+### GET request from highlander
+POST http://localhost:8000/weather/highlander_says/10
+Accept: text/html
+
+### POST request from highlander
+POST http://localhost:8000/weather/highlander_says/10
+Accept: text/html
+
+
+### POST request from highlander
+POST http://localhost:8000/weather/highlander_says/api
+Content-Type: application/json
+Accept: application/json
+
+{
+  "threshold": 1,
+  "trials": 10
+}

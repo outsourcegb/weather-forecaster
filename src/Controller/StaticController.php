@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class StaticController extends AbstractController
 {
-    #[Route('/', name: 'app_static')]
+    #[Route('/', name: 'app_static_home')]
     public function index(): Response
     {
         $draw = random_int(1, 100);

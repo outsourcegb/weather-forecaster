@@ -1,0 +1,9 @@
+{
+  "forcast": [
+    {% for forcast in forcasts %}
+      {
+        "forcast": "{{ forcast }}"
+      }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ],
+}
