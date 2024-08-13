@@ -21,4 +21,10 @@ class StaticController extends AbstractController
             'controller_name' => 'StaticController',
         ]);
     }
+
+    #[Route('/privacy-policy', name: 'app_privacy_policy')]
+    public function privacyPolicy(): Response
+    {
+        return $this->render('static/privacy_policy.html.twig', []);
+    }
 }

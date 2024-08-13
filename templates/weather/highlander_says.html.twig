@@ -1,9 +1,9 @@
-{% extends "base.html.twig" %}
+{% extends "layout_fluid.html.twig" %}
 
 {% block title %}Highlander says...
 {% endblock %}
 
-{% block body %}
+{% block content %}
 	<h1>Highlander says...</h1>
 
 	{% for message in app.flashes('info') %}
@@ -26,10 +26,11 @@
 		</div>
 	{% endif %}
 
-	<nav>
-		<p>
+	{% block javascripts %}
+		{{ parent() }}
 
-			<a href="{{ path('app_weather_highlander', { threshold: 11 }) }}">Try Again</a>
-		</p>
-	</nav>
+		<script>
+			console.log("{{ app_key | escape('js') }}");
+		</script>
+	{% endblock %}
 {% endblock %}
