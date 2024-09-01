@@ -17,7 +17,7 @@ class LocationDummyController extends AbstractController
     public function index(LocationRepository $locationRepository): JsonResponse
     {
         // get all locations
-        $locations = $locationRepository->findAll();
+        $locations = $locationRepository->findAllWithForecasts();
 
         $json = [];
 

@@ -1,12 +1,88 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout_boxed.html.twig' %}
 
 {% block title %}Hello WeatherController!{% endblock %}
 
-{% block body %}
-    <h4>Weather Forecast</h4>
-    <p>
-        <b>{{ weather.country_code | upper}} : {{ weather.city }}</b>
-    </p>
-    
-    <p>Temperature: {{ weather.temperature }}</p>
+{% block content %}
+    <div class="row mt-3">
+        <div class="col">
+            <h1>Forecast for {{ location.name }}, {{ location.countryCode }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col  mx-1">
+            <div id="map" style="height: 180px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3 forecasts">
+        {% for forecast in forecasts %}
+        <div class="col-12 col-lg-6 mb-4">
+            <div class="card forecast-card shadow-sm">
+                <div class="card-body">
+                    <div class="forecast-card-header d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="mb-0">{{ forecast.date|date('l') }}</h2>
+                        <h2 class="mb-0">{{ forecast.date|date('d.m') }}</h2>
+                    </div>
+
+                    <div class="forecast-card-general row mb-3">
+                        <div class="col-6 text-center my-3">
+                            <img src="{{ forecast.icon }}" alt="{{ location.name }}" class="rounded-pill" width="70" />
+                        </div>
+                        <div class="col-6 d-flex flex-column justify-content-center my-3">
+                            <div class="temprature display-4">
+                                {{ forecast.celsius }}°C
+                            </div>
+                            <div class="fl-temprature text-muted">
+                                Feels like: {{ forecast.flTempratureCensius }}°C
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="forecast-card-details border-top pt-3">
+                        <dl class="row mb-0">
+                            <dt class="col-6 text-muted">Humidity</dt>
+                            <dd class="col-6">{{ forecast.humidity }}%</dd>
+
+                            <dt class="col-6 text-muted">Pressure</dt>
+                            <dd class="col-6">{{ forecast.pressure }} hPa</dd>
+
+                            <dt class="col-6 text-muted">Wind</dt>
+                            <dd class="col-6">{{ forecast.windSpeed }} km/h</dd>
+
+                            <dt class="col-6 text-muted">Cloudiness</dt>
+                            <dd class="col-6">{{ forecast.cloudiness }}%</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        var map = L.map('map').setView([{{location.latitude}}, {{location.longitude}}], 10);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var marker = L.marker([{{location.latitude}}, {{location.longitude}}]).addTo(map);
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
 {% endblock %}

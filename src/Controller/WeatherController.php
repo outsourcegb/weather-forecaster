@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\HighlanderApiDTO;
+use App\Repository\ForecastRepository;
+use App\Repository\LocationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,20 +17,30 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class WeatherController extends AbstractController
 {
-    #[Route('/weather/of_country/{country_code}/{city}', name: 'app_weather')]
-    public function index(string $country_code, string $city): Response
-    {
-        $temprature = random_int(-20, 100);
+    #[Route('/weather/{countryCode}/{city}', name: 'app_weather')]
+    public function index(
+        LocationRepository $locationRepository,
+        ForecastRepository $forecastRepository,
+        string $countryCode,
+        string $city
+    ): Response {
+        $location = $locationRepository->findOneBy([
+            'countryCode' => $countryCode,
+            'name' => $city,
+        ]);
 
-        $weather = [
-            'country_code' => $country_code,
-            'city' => $city,
-            'temperature' => $temprature,
-        ];
+        if (!$location) {
+            throw $this->createNotFoundException('Location not found');
+        }
+
+        // $forecasts = $forecastRepository->findByLocation($location);
+        $forecasts = $forecastRepository->findForForecast($location);
+
+        // dd($location, $forecasts);
 
         return $this->render('weather/index.html.twig', [
-            'controller_name' => 'WeatherController',
-            'weather' => $weather,
+            'location' => $location,
+            'forecasts' => $forecasts,
         ]);
     }
 
